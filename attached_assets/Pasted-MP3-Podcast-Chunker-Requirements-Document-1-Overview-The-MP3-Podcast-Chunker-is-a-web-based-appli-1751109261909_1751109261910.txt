@@ -1,0 +1,323 @@
+MP3 Podcast Chunker Requirements Document
+1. Overview
+The MP3 Podcast Chunker is a web-based application designed to allow users to upload MP3 podcast files, split them into smaller segments using FFmpeg, manage the resulting files, and play them back with an intuitive interface. The application uses React with Ant Design for the frontend and Node.js with Express and fluent-ffmpeg for the backend.
+1.1 Purpose
+This document defines the functional and non-functional requirements for the MP3 Podcast Chunker, ensuring a clear roadmap for development, testing, and deployment.
+1.2 Scope
+The application will include:
+
+File upload functionality for MP3 files.
+Chunking of MP3 files into user-defined segments (e.g., by duration).
+File management (list, download, delete chunks).
+Audio playback with controls (play, pause, seek, volume).
+Responsive and accessible UI using Ant Design components.
+
+2. Functional Requirements
+2.1 User Interface (Frontend: React with Ant Design)
+2.1.1 File Upload
+
+Description: Users can upload MP3 files via a drag-and-drop interface or file picker.
+Components:
+Ant Design Upload component with drag-and-drop support (using react-dropzone internally).
+File size validation (e.g., max 500MB per file).
+File type validation (only .mp3 files allowed).
+
+
+Features:
+Display file name and size during upload.
+Show upload progress using Ant Design Progress component.
+Error handling for invalid files or failed uploads.
+
+
+UI/UX:
+Drag-and-drop area with clear instructions (e.g., "Drop MP3 files here or click to browse").
+Responsive design for desktop and mobile.
+ARIA labels for accessibility (e.g., aria-label="Upload MP3 file").
+
+
+
+2.1.2 Chunking Configuration
+
+Description: Users can specify how to split uploaded MP3 files (e.g., by duration).
+Components:
+Ant Design InputNumber for specifying chunk duration (in minutes, default: 10).
+Ant Design Button to trigger chunking.
+
+
+Features:
+Allow users to set chunk duration (1–60 minutes).
+Validate input (e.g., positive numbers only).
+Display estimated number of chunks based on file duration.
+
+
+UI/UX:
+Inline form with clear labels (e.g., "Chunk Duration (minutes)").
+Tooltip explaining chunking process using Ant Design Tooltip.
+
+
+
+2.1.3 File Management
+
+Description: Users can view, download, and delete chunked MP3 files.
+Components:
+Ant Design Table to list chunked files (columns: File Name, Duration, Size, Actions).
+Ant Design Button for actions (Play, Download, Delete).
+
+
+Features:
+Display list of chunked files with metadata (name, duration, size).
+Allow downloading individual chunks or all chunks as a ZIP file.
+Allow deleting individual chunks or all chunks for a podcast.
+Confirm deletion using Ant Design Modal (e.g., "Are you sure you want to delete this chunk?").
+
+
+UI/UX:
+Sortable table columns (e.g., by name or size).
+Responsive table layout for mobile devices.
+ARIA labels for table actions (e.g., aria-label="Download chunk").
+
+
+
+2.1.4 Audio Playback
+
+Description: Users can play chunked MP3 files with standard audio controls.
+Components:
+Custom audio player using HTML5 <audio> or react-h5-audio-player wrapped in Ant Design styling.
+Ant Design Slider for seek bar.
+Ant Design Button for play/pause, volume control, and skip (forward/backward 10 seconds).
+
+
+Features:
+Play, pause, and seek within a chunk.
+Display current time and total duration.
+Volume control (0–100%).
+Skip forward/backward by 10 seconds.
+
+
+UI/UX:
+Compact player UI with clear controls.
+Responsive design for mobile and desktop.
+ARIA labels for accessibility (e.g., aria-label="Play audio").
+
+
+
+2.1.5 Progress Feedback
+
+Description: Provide real-time feedback during file upload and chunking.
+Components:
+Ant Design Progress for upload and chunking progress.
+Ant Design Spin for loading states.
+
+
+Features:
+Show upload progress as a percentage.
+Show chunking progress (e.g., "Processing chunk 1 of 5").
+Display success/error notifications using Ant Design notification.
+
+
+UI/UX:
+Non-intrusive progress indicators.
+Clear error messages (e.g., "Failed to chunk file: Invalid MP3 format").
+
+
+
+2.2 Backend (Node.js with Express and FFmpeg)
+2.2.1 File Upload Handling
+
+Description: Handle MP3 file uploads and store them temporarily.
+Libraries:
+multer for file uploads.
+Node.js fs module for file management.
+
+
+Features:
+Store uploaded files in a temporary directory (e.g., uploads/).
+Validate file type (.mp3) and size (max 500MB).
+Return file metadata (name, size, duration) to the frontend.
+
+
+Implementation:
+Use multer middleware to handle multipart/form-data uploads.
+Use fluent-ffmpeg to extract metadata (e.g., duration).
+
+
+
+2.2.2 MP3 Chunking
+
+Description: Split uploaded MP3 files into segments using FFmpeg.
+Libraries:
+fluent-ffmpeg for FFmpeg integration.
+
+
+Features:
+Split MP3 into chunks based on user-specified duration (e.g., 10 minutes).
+Use FFmpeg’s -f segment to create chunks without re-encoding (fast, preserves quality).
+Store chunks in a dedicated directory (e.g., public/chunks/).
+Return chunk metadata (file paths, names, durations) to the frontend.
+
+
+Implementation:
+Example FFmpeg command (via fluent-ffmpeg):const ffmpeg = require('fluent-ffmpeg');
+ffmpeg('uploads/input.mp3')
+  .outputOptions(['-f segment', '-segment_time 600', '-c copy'])
+  .output('public/chunks/chunk_%03d.mp3')
+  .on('progress', (progress) => {
+    // Send progress updates via WebSocket
+  })
+  .on('end', () => {
+    // Return chunk metadata
+  })
+  .on('error', (err) => {
+    // Handle errors
+  })
+  .run();
+
+
+
+
+
+2.2.3 File Management
+
+Description: Manage chunked files (list, download, delete).
+Features:
+List all chunks for a given podcast (stored in public/chunks/).
+Provide download endpoints for individual chunks or a ZIP of all chunks.
+Delete individual chunks or all chunks for a podcast.
+
+
+Implementation:
+Use Node.js fs to list and delete files.
+Use archiver library to create ZIP files for bulk downloads.
+Example endpoint for listing chunks:app.get('/api/chunks/:podcastId', (req, res) => {
+  const chunks = fs.readdirSync(`public/chunks/${podcastId}`);
+  res.json(chunks.map(file => ({ name: file, path: `/chunks/${podcastId}/${file}` })));
+});
+
+
+
+
+
+2.2.4 Progress Updates
+
+Description: Provide real-time progress updates for chunking.
+Features:
+Use WebSocket (e.g., ws library) to send FFmpeg progress updates to the frontend.
+Update frontend with percentage complete and estimated time remaining.
+
+
+Implementation:
+Use fluent-ffmpeg’s progress event to track chunking progress.
+Example WebSocket setup:const WebSocket = require('ws');
+const wss = new WebSocket.Server({ port: 8080 });
+wss.on('connection', (ws) => {
+  ffmpeg.on('progress', (progress) => {
+    ws.send(JSON.stringify({ progress: progress.percent }));
+  });
+});
+
+
+
+
+
+2.3 API Endpoints
+
+POST /api/upload: Upload an MP3 file (returns file ID and metadata).
+POST /api/chunk/:fileId: Chunk an uploaded file (parameters: duration in seconds).
+GET /api/chunks/:fileId: List chunks for a file.
+GET /api/chunks/:fileId/:chunkName: Download a specific chunk.
+DELETE /api/chunks/:fileId/:chunkName: Delete a specific chunk.
+GET /api/chunks/:fileId/zip: Download all chunks as a ZIP file.
+
+3. Non-Functional Requirements
+3.1 Performance
+
+Upload Speed: Handle uploads up to 500MB with minimal latency (use streaming with multer).
+Chunking Speed: Use FFmpeg’s -c copy to avoid re-encoding, ensuring chunking completes within 10 seconds per hour of audio.
+Playback: Stream chunks with low latency (<1 second) using HTML5 <audio>.
+
+3.2 Scalability
+
+File Storage: Store temporary uploads and chunks on disk, with plans for cloud storage (e.g., AWS S3) for scalability.
+Concurrent Users: Support at least 50 concurrent users for uploads and chunking (use Node.js clustering if needed).
+
+3.3 Security
+
+File Validation: Validate MP3 files to prevent malicious uploads (e.g., check MIME type and file headers).
+Authentication: Optional user authentication (e.g., JWT) for private podcast management (future scope).
+Data Sanitization: Sanitize file names and inputs to prevent injection attacks.
+
+3.4 Usability
+
+Responsive Design: Support desktop (min-width: 1024px) and mobile (min-width: 320px) layouts using Ant Design’s grid system.
+Accessibility: Comply with WCAG 2.1 (e.g., ARIA labels, keyboard navigation for all controls).
+Localization: Support English initially, with placeholders for future i18n (e.g., using react-i18next).
+
+3.5 Reliability
+
+Error Handling: Gracefully handle FFmpeg errors, file upload failures, and network issues with user-friendly messages.
+Logging: Log all API requests and FFmpeg operations for debugging (use winston).
+Backup: Periodically clean up temporary files to prevent disk space issues.
+
+4. Technical Stack
+
+Frontend:
+React (v18.x) for component-based UI.
+Ant Design (v5.x) for UI components.
+react-h5-audio-player for audio playback.
+react-dropzone for file uploads.
+axios for API requests.
+ws for WebSocket client.
+
+
+Backend:
+Node.js (v20.x) with Express for API server.
+fluent-ffmpeg for MP3 chunking.
+multer for file uploads.
+archiver for ZIP downloads.
+ws for WebSocket server.
+
+
+Dependencies:
+FFmpeg installed on the server.
+dotenv for environment variables.
+winston for logging.
+
+
+
+5. Assumptions and Constraints
+
+Assumptions:
+FFmpeg is installed and accessible on the server.
+Users have modern browsers (Chrome, Firefox, Safari) with HTML5 <audio> support.
+Server has sufficient disk space for temporary files and chunks.
+
+
+Constraints:
+Maximum file size: 500MB.
+Maximum chunk duration: 60 minutes.
+No real-time audio streaming (chunks are pre-generated).
+
+
+
+6. Future Enhancements
+
+Add user authentication for private podcast management.
+Support cloud storage (e.g., AWS S3) for scalability.
+Add waveform visualization using wavesurfer.js.
+Support additional audio formats (e.g., WAV, AAC).
+
+7. Deliverables
+
+Source code for frontend (React with Ant Design) and backend (Node.js with Express).
+Documentation for API endpoints and FFmpeg setup.
+Unit tests for critical components (e.g., file upload, chunking).
+Deployment instructions for Node.js server and FFmpeg.
+
+8. Acceptance Criteria
+
+Users can upload MP3 files up to 500MB without errors.
+Users can split MP3 files into chunks of specified duration (1–60 minutes).
+Users can view, play, download, and delete chunked files.
+UI is responsive and accessible on desktop and mobile.
+Progress feedback is shown during upload and chunking.
+All API endpoints function as specified with proper error handling.

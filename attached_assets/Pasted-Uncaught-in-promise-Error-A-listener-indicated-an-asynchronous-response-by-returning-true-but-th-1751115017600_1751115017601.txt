@@ -1,0 +1,54 @@
+Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received
+
+workspace_iframe.html:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32 Unrecognized feature: 'battery'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+Network.js:227 WebSocket connection to 'wss://6c47eefe-44df-4b29-af7d-99ff26442f6f-00-5y2p2qik92xw.kirk.replit.dev/?token=Wo3C_Kun0mKg' failed: 
+Network.js:227 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=Wo3C_Kun0mKg' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+Console.js:61 WebSocket connected
+Console.js:61 Loading audio chunk: 001 - Jennifer Burns_ Milton Friedman, Ayn Rand, Economics, Capitalism, Freedom _ Lex Fridman Podcast #457-1.mp3 path: /chunks/file-1/001 - Jennifer Burns_ Milton Friedman, Ayn Rand, Economics, Capitalism, Freedom _ Lex Fridman Podcast #457-1.mp3
+Console.js:61 Audio load started
+Console.js:61 Audio error: 
+Event
+ Audio error code: 
+MediaError
+code
+: 
+4
+message
+: 
+"DEMUXER_ERROR_COULD_NOT_OPEN: FFmpegDemuxer: open context failed"
+[[Prototype]]
+: 
+MediaError
+audio-player.tsx:83 Uncaught (in promise) NotSupportedError: The element has no supported sources.
+Console.js:61 Loading audio chunk: 005 - Jennifer Burns_ Milton Friedman, Ayn Rand, Economics, Capitalism, Freedom _ Lex Fridman Podcast #457-1.mp3 path: /chunks/file-1/005 - Jennifer Burns_ Milton Friedman, Ayn Rand, Economics, Capitalism, Freedom _ Lex Fridman Podcast #457-1.mp3
+Console.js:61 Audio load started
+Console.js:61 Audio error: 
+Event
+ Audio error code: 
+MediaError
+code
+: 
+4
+message
+: 
+"DEMUXER_ERROR_COULD_NOT_OPEN: FFmpegDemuxer: open context failed"
+[[Prototype]]
+: 
+MediaError
+Mt.forEach.n.<computed>	@	Console.js:61

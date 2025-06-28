@@ -1,0 +1,51 @@
+~/workspace$ # Remove the files from git tracking (but keep them locally)
+git rm --cached -r public/uploads/
+git rm --cached -r public/chunks/
+
+# Commit this change
+git commit -m "Remove tracked audio files, now handled by .gitignore"
+
+# Push the changes
+git push
+rm 'public/uploads/1751134667869-774818202-Rick Rubin_ Vibe Coding is the Punk Rock of Software.mp3'
+rm 'public/uploads/1751134710525-626888330-Marc Andreessen on AI, the Future of Startups, and Why Timing Is Everything....mp3'
+rm 'public/chunks/file-1/001 - Rick Rubin_ Vibe Coding is the Punk Rock of Software.mp3'
+rm 'public/chunks/file-1/002 - Rick Rubin_ Vibe Coding is the Punk Rock of Software.mp3'
+rm 'public/chunks/file-1/003 - Rick Rubin_ Vibe Coding is the Punk Rock of Software.mp3'
+rm 'public/chunks/file-1/004 - Rick Rubin_ Vibe Coding is the Punk Rock of Software.mp3'
+rm 'public/chunks/file-1/005 - Rick Rubin_ Vibe Coding is the Punk Rock of Software.mp3'
+rm 'public/chunks/file-1/006 - Rick Rubin_ Vibe Coding is the Punk Rock of Software.mp3'
+rm 'public/chunks/file-1/007 - Rick Rubin_ Vibe Coding is the Punk Rock of Software.mp3'
+rm 'public/chunks/file-1/008 - Rick Rubin_ Vibe Coding is the Punk Rock of Software.mp3'
+rm 'public/chunks/file-2/001 - Marc Andreessen on AI, the Future of Startups, and Why Timing Is Everything....mp3'
+rm 'public/chunks/file-2/002 - Marc Andreessen on AI, the Future of Startups, and Why Timing Is Everything....mp3'
+[main 02d85ad] Remove tracked audio files, now handled by .gitignore
+ 12 files changed, 0 insertions(+), 0 deletions(-)
+ delete mode 100644 public/chunks/file-1/001 - Rick Rubin_ Vibe Coding is the Punk Rock of Software.mp3
+ delete mode 100644 public/chunks/file-1/002 - Rick Rubin_ Vibe Coding is the Punk Rock of Software.mp3
+ delete mode 100644 public/chunks/file-1/003 - Rick Rubin_ Vibe Coding is the Punk Rock of Software.mp3
+ delete mode 100644 public/chunks/file-1/004 - Rick Rubin_ Vibe Coding is the Punk Rock of Software.mp3
+ delete mode 100644 public/chunks/file-1/005 - Rick Rubin_ Vibe Coding is the Punk Rock of Software.mp3
+ delete mode 100644 public/chunks/file-1/006 - Rick Rubin_ Vibe Coding is the Punk Rock of Software.mp3
+ delete mode 100644 public/chunks/file-1/007 - Rick Rubin_ Vibe Coding is the Punk Rock of Software.mp3
+ delete mode 100644 public/chunks/file-1/008 - Rick Rubin_ Vibe Coding is the Punk Rock of Software.mp3
+ delete mode 100644 public/chunks/file-2/001 - Marc Andreessen on AI, the Future of Startups, and Why Timing Is Everything....mp3
+ delete mode 100644 public/chunks/file-2/002 - Marc Andreessen on AI, the Future of Startups, and Why Timing Is Everything....mp3
+ delete mode 100644 public/uploads/1751134667869-774818202-Rick Rubin_ Vibe Coding is the Punk Rock of Software.mp3
+ delete mode 100644 public/uploads/1751134710525-626888330-Marc Andreessen on AI, the Future of Startups, and Why Timing Is Everything....mp3
+Enumerating objects: 112, done.
+Counting objects: 100% (112/112), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (94/94), done.
+Writing objects: 100% (98/98), 316.72 MiB | 4.75 MiB/s, done.
+Total 98 (delta 59), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (59/59), completed with 9 local objects.
+remote: warning: File public/uploads/1751134077889-939229999-Alex Karp, Co-Founder, CEO & Director, Palantir, 5_22_2025.mp3 is 82.03 MB; this is larger than GitHub's recommended maximum file size of 50.00 MB
+remote: error: Trace: e8555b4dc2dc755b4d31b9f536e71acc5acaafcc36c93bfcf1c17c57ef964929
+remote: error: See https://gh.io/lfs for more information.
+remote: error: File public/uploads/1751134667869-774818202-Rick Rubin_ Vibe Coding is the Punk Rock of Software.mp3 is 107.70 MB; this exceeds GitHub's file size limit of 100.00 MB
+remote: error: File public/uploads/1751134259138-397680543-Why We Stopped Progressing _ Peter Thiel _ EP 541.mp3 is 110.59 MB; this exceeds GitHub's file size limit of 100.00 MB
+remote: error: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.
+To https://github.com/PHM2023/PodcastSplitter.git
+ ! [remote rejected] main -> main (pre-receive hook declined)
+error: failed to push some refs to 'https://github.com/PHM2023/PodcastSplitter.git'
