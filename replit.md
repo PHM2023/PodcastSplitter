@@ -126,6 +126,7 @@ Changelog:
 - June 28, 2025. Simplified home screen to clear file listings after upload - all file history managed exclusively in Library page
 - June 28, 2025. Added smart upload date display in Library with relative formatting (Today, Yesterday, days ago, or full date)
 - June 28, 2025. Cleaned up local MP3 files and resolved git repository large file issues - fresh start with proper .gitignore
+- June 29, 2025. Implemented flat file JSON database for persistent storage of podcast metadata - survives server restarts
 
 ## User Preferences
 

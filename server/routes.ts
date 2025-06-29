@@ -362,5 +362,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Database statistics and management
+  app.get('/api/database/stats', async (req, res) => {
+    try {
+      const stats = (storage as any).getStats?.() || {
+        totalFiles: (await storage.getAllUploadedFiles()).length,
+        totalChunks: (await storage.getAllChunks()).length,
+        lastUpdated: new Date().toISOString(),
+        databaseSize: 'N/A'
+      };
+      res.json(stats);
+    } catch (error) {
+      console.error('Error getting database stats:', error);
+      res.status(500).json({ error: 'Failed to get database statistics' });
+    }
+  });
+
+  // Cleanup orphaned entries
+  app.post('/api/database/cleanup', async (req, res) => {
+    try {
+      const result = await (storage as any).cleanupOrphanedEntries?.() || { removedFiles: 0, removedChunks: 0 };
+      res.json({
+        message: 'Cleanup completed',
+        ...result
+      });
+    } catch (error) {
+      console.error('Error during cleanup:', error);
+      res.status(500).json({ error: 'Failed to cleanup database' });
+    }
+  });
+
   return httpServer;
 }
