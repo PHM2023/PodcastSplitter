@@ -40,6 +40,9 @@ public/chunks/
 **/*.flac
 **/*.ogg
 
+# Database files - keep local podcast metadata private
+data/
+
 # Logs
 logs
 *.log
